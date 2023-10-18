@@ -25,7 +25,7 @@ export const submit = async (
     );
     setGreetings();
     await sendEmailVerification(userCredential.user, {
-      url: "http://localhost:3000",
+      url: process.env.NEXT_PUBLIC_HOST || "",
     });
     return true;
   } catch (error) {
