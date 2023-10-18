@@ -28,7 +28,7 @@ export default function Home() {
         </h1>
         <Link
           className="btn mt-4 btn-wide btn-lg"
-          href={user ? "/constructor?type=template" : "?login="}
+          href={user ? "/constructor?type=template" : "?login=true"}
         >
           Create Widget
         </Link>

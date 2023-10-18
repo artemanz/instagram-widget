@@ -3,7 +3,7 @@ import { SignIn, SignUp } from "..";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Logo } from "./Logo";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { authApi, authStore } from "@/stores/auth";
 import { useStore } from "effector-react";
 import { auth } from "@/lib/firebase";
@@ -15,8 +15,13 @@ export const Header = () => {
 
   const router = useRouter();
   const pathname = usePathname();
+  const search = useSearchParams();
   const [signButtons, setSignButtons] = useState(false);
   const [authType, setauthType] = useState<IPopups>(null);
+
+  useEffect(() => {
+    if (search.get("login")) setauthType("login");
+  }, [search]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
