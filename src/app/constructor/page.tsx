@@ -1,28 +1,16 @@
 "use client";
 
-import { useSearchParams, useRouter } from "next/navigation";
-import { authStore } from "@/stores/auth";
 import { useStore } from "effector-react";
 import { Widget } from "./components";
 import { widgetApi, widgetStore } from "@/stores/widget";
 import { AiOutlineDesktop, AiOutlineMobile } from "react-icons/ai";
 import { Sidebar } from "./components/Sidebars";
-import { useEffect } from "react";
 
 interface Props {}
 
 const Constructor = () => {
   const { view, theme } = useStore(widgetStore);
   const { pickView } = widgetApi;
-
-  const searchParams = useSearchParams();
-  const router = useRouter();
-
-  useEffect(() => {
-    return () => {
-      if (!searchParams.get("type")) router.replace("?type=template");
-    };
-  }, []);
 
   return (
     <main className="relative bg-white text-base-200 grid grid-rows-1 lg:grid-cols-[24rem_auto] w-screen">

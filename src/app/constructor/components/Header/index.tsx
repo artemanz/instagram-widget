@@ -1,22 +1,22 @@
 import { Dispatch, useEffect, useState } from "react";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { widgetApi, widgetStore } from "@/stores/widget";
+import { useStore } from "effector-react";
 
 interface Props {
-  setPublishPopup: Dispatch<boolean>
+  setPublishPopup: Dispatch<boolean>;
 }
 
-export const Header = ({setPublishPopup}: Props) => {
-  const path = usePathname();
-
+export const Header = ({ setPublishPopup }: Props) => {
+  const { constructorState } = useStore(widgetStore);
+  const { setConstructorState } = widgetApi;
   const router = useRouter();
-  const params = useSearchParams();
 
   const [title, setTitle] = useState("");
   const [publish, setPublish] = useState(false);
 
   useEffect(() => {
-    const type = params.get("type") as "template" | "components" | "language";
-    switch (type) {
+    switch (constructorState) {
       case "template":
         setTitle("Choose Template");
         setPublish(false);
@@ -33,7 +33,7 @@ export const Header = ({setPublishPopup}: Props) => {
         setTitle("");
         setPublish(false);
     }
-  }, [path, params]);
+  }, [constructorState]);
 
   return (
     <header className="z-10 bg-white shadow-md">
@@ -41,7 +41,9 @@ export const Header = ({setPublishPopup}: Props) => {
         <button
           className="transition-transform active:scale-90"
           onClick={() => {
-            router.back();
+            if (constructorState === "template") router.back();
+            if (constructorState === "components")
+              setConstructorState("template");
           }}
         >
           <svg
@@ -61,7 +63,11 @@ export const Header = ({setPublishPopup}: Props) => {
         <p>{title}</p>
 
         <div className="flex gap-4">
-          <button disabled={!publish} className="btn btn-success" onClick={() => setPublishPopup(true)}>
+          <button
+            disabled={!publish}
+            className="btn btn-success"
+            onClick={() => setPublishPopup(true)}
+          >
             Publish
           </button>
 

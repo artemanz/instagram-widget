@@ -2,6 +2,9 @@
 import { ReactNode, useEffect, useState } from "react";
 import { CodeSnippetPopup, Header } from "./components";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { authStore } from "@/stores/auth";
+import { useStore } from "effector-react";
+import { useRouter } from "next/navigation";
 
 interface Props {
   children: ReactNode;
@@ -12,6 +15,15 @@ const queryClient = new QueryClient({
 
 const Root = ({ children }: Props) => {
   const [publishPopup, setPublishPopup] = useState(false);
+
+  const { user } = useStore(authStore);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!user) router.replace("/");
+  }, []);
+
+  if (!user) return null;
 
   return (
     <QueryClientProvider client={queryClient}>

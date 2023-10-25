@@ -1,19 +1,18 @@
-import Link from "next/link";
-import { ReactNode, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { HeaderSidebar } from "./HeaderSidebar";
 import { TemplateSidebar } from "./TemplateSidebar";
 import clsx from "clsx";
 import { LanguageSidebar } from "./LanguageSidebar";
+import { useStore } from "effector-react";
+import { widgetApi, widgetStore } from "@/stores/widget";
 
 export const Sidebar = () => {
   const [sidebarView, setsidebarView] = useState("template");
-  const path = useSearchParams();
+  const { constructorState } = useStore(widgetStore);
 
   useEffect(() => {
-    const type = path.get("type");
-    if (type) setsidebarView(type);
-  }, [path]);
+    setsidebarView(constructorState);
+  }, [constructorState]);
 
   return (
     <aside className="relative z-20 hidden p-5 text-white bg-base-200 lg:flex">
@@ -27,13 +26,12 @@ export const Sidebar = () => {
             )}
           >
             <TemplateSidebar />
-            <Link
-              href={"?type=components"}
-              shallow={true}
+            <button
+              onClick={() => widgetApi.setConstructorState("components")}
               className="btn btn-success"
             >
               Continue with this template
-            </Link>
+            </button>
           </div>
 
           <div

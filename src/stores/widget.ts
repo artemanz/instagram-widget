@@ -6,6 +6,7 @@ type THeaderComponent = {
 };
 
 export type TWidgetStore = {
+  constructorState: "template" | "components" | "language";
   theme: "light_theme" | "dark_theme" | "transparent_theme";
   view: "desktop" | "mobile";
   header: boolean;
@@ -22,6 +23,7 @@ export type TWidgetStore = {
 };
 
 export const widgetStore = createStore<TWidgetStore>({
+  constructorState: "template",
   theme: "light_theme",
   view: "desktop",
   header: true,
@@ -62,6 +64,10 @@ export const widgetStore = createStore<TWidgetStore>({
 });
 
 export const widgetApi = createApi(widgetStore, {
+  setConstructorState: (store, newState: TWidgetStore["constructorState"]) => ({
+    ...store,
+    constructorState: newState,
+  }),
   pickTheme: (store, theme: TWidgetStore["theme"]) => ({
     ...store,
     theme,
