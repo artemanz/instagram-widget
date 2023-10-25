@@ -11,7 +11,7 @@ import { Header, Popup } from "./components";
 export default function Home() {
   const { user } = useStore(authStore);
   const [authType, setauthType] = useState<IPopups>(null);
-  console.log(process.env.NEXT_PUBLIC_HOST);
+
   return (
     <div className="grid h-screen [grid-auto-rows:auto_minmax(0,1fr)]">
       <Header setauthType={setauthType} />

@@ -34,7 +34,7 @@ export const submit = async (
     });
 
     await sendEmailVerification(userCredential.user, {
-      url: process.env.NEXT_PUBLIC_HOST!,
+      url: process.env.NEXT_PUBLIC_HOST!
     });
     return true;
   } catch (error) {

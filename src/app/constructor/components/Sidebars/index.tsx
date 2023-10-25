@@ -27,7 +27,11 @@ export const Sidebar = () => {
             )}
           >
             <TemplateSidebar />
-            <Link href={"?type=components"} className="btn btn-success">
+            <Link
+              href={"?type=components"}
+              shallow={true}
+              className="btn btn-success"
+            >
               Continue with this template
             </Link>
           </div>

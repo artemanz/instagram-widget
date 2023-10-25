@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  redirect,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { authStore } from "@/stores/auth";
 import { useStore } from "effector-react";
 import { Widget } from "./components";
@@ -17,7 +12,6 @@ import { useEffect } from "react";
 interface Props {}
 
 const Constructor = () => {
-  const { user } = useStore(authStore);
   const { view, theme } = useStore(widgetStore);
   const { pickView } = widgetApi;
 
@@ -25,7 +19,9 @@ const Constructor = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!searchParams.get("type")) router.replace("?type=template");
+    return () => {
+      if (!searchParams.get("type")) router.replace("?type=template");
+    };
   }, []);
 
   return (
