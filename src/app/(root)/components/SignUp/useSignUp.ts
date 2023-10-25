@@ -4,7 +4,8 @@ import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { auth, db } from "@/lib/firebase";
+import { doc, setDoc } from "firebase/firestore";
 
 export const submit = async (
   formData: IForm,
@@ -24,8 +25,16 @@ export const submit = async (
       formData.password
     );
     setGreetings();
+    const userData = {
+      email: formData.email,
+      instagramLogin: formData.instagramLogin,
+    };
+    await setDoc(doc(db, "users", userCredential.user.uid), {
+      ...userData,
+    });
+
     await sendEmailVerification(userCredential.user, {
-      url: process.env.NEXT_PUBLIC_HOST || "",
+      url: process.env.NEXT_PUBLIC_HOST!,
     });
     return true;
   } catch (error) {

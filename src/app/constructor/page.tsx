@@ -1,26 +1,46 @@
 "use client";
 
-import { redirect } from "next/navigation";
+import {
+  redirect,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import { authStore } from "@/stores/auth";
 import { useStore } from "effector-react";
 import { Widget } from "./components";
 import { widgetApi, widgetStore } from "@/stores/widget";
 import { AiOutlineDesktop, AiOutlineMobile } from "react-icons/ai";
 import { Sidebar } from "./components/Sidebars";
+import { useEffect } from "react";
 
 interface Props {}
 
 const Constructor = () => {
   const { user } = useStore(authStore);
-  const { view } = useStore(widgetStore);
+  const { view, theme } = useStore(widgetStore);
   const { pickView } = widgetApi;
-  if (!user) redirect("/");
+
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!searchParams.get("type")) router.replace("?type=template");
+  }, []);
 
   return (
     <main className="relative bg-white text-base-200 grid grid-rows-1 lg:grid-cols-[24rem_auto] w-screen">
       <Sidebar />
       {/* WIDGET */}
-      <div className="flex flex-col items-center py-4 overflow-y-auto custom-scrollbar">
+      <div
+        className={`flex flex-col items-center py-4 overflow-y-auto custom-scrollbar ${
+          theme === "light_theme"
+            ? "bg-white text-base-100"
+            : theme === "dark_theme"
+            ? "bg-base-100 text-white"
+            : "bg-transparent"
+        }`}
+      >
         <div className="flex gap-4 mx-auto">
           <button
             onClick={() => pickView("desktop")}

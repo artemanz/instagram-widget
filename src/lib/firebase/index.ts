@@ -1,1 +1,1 @@
-export { app, auth } from "./init";
+export { app, auth,db } from "./init";

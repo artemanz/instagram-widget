@@ -40,9 +40,9 @@ export const Sidebar = () => {
             )}
           >
             <HeaderSidebar />
-            <Link href={"?type=language"} className="btn btn-success">
+            {/* <Link href={"?type=language"} className="btn btn-success">
               Continue
-            </Link>
+            </Link> */}
           </div>
 
           <div

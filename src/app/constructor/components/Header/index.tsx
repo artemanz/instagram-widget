@@ -1,7 +1,11 @@
-import { useEffect, useState } from "react";
+import { Dispatch, useEffect, useState } from "react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
-export const Header = () => {
+interface Props {
+  setPublishPopup: Dispatch<boolean>
+}
+
+export const Header = ({setPublishPopup}: Props) => {
   const path = usePathname();
 
   const router = useRouter();
@@ -19,7 +23,7 @@ export const Header = () => {
         break;
       case "components":
         setTitle("Header");
-        setPublish(false);
+        setPublish(true);
         break;
       case "language":
         setTitle("Language");
@@ -57,7 +61,7 @@ export const Header = () => {
         <p>{title}</p>
 
         <div className="flex gap-4">
-          <button disabled={!publish} className="btn btn-success">
+          <button disabled={!publish} className="btn btn-success" onClick={() => setPublishPopup(true)}>
             Publish
           </button>
 

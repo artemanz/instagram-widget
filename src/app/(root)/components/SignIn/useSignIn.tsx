@@ -8,7 +8,17 @@ export const submit = async (
   setError: UseFormSetError<IForm>
 ) => {
   try {
-    await signInWithEmailAndPassword(auth, formData.email, formData.password);
+    const data = await signInWithEmailAndPassword(
+      auth,
+      formData.email,
+      formData.password
+    );
+
+    if (!data.user.emailVerified) {
+      setError("root", { message: "Email is not verified." });
+      return false;
+    }
+
     return true;
   } catch (error) {
     if (error instanceof FirebaseError) {

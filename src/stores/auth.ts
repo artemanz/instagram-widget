@@ -1,9 +1,9 @@
 import { auth } from "@/lib/firebase";
-import { createApi, createEvent, createStore } from "effector";
+import { createApi, createStore } from "effector";
 import { User, signOut } from "firebase/auth";
 
 type AuthStore = {
-  user: User | null;
+  user: { email: string; instagramLogin: string } | null;
 };
 
 export const authStore = createStore<AuthStore>({
