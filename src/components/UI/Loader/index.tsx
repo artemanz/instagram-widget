@@ -1,3 +1,3 @@
-import c from "./styles.module.css";
+import c from "./style.module.css";
 
 export const Loader = () => <div className={c["custom-loader"]}></div>;

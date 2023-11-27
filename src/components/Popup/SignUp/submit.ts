@@ -3,14 +3,17 @@ import { UseFormSetError } from "react-hook-form";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth, db } from "@/lib/firebase";
 import { doc, setDoc } from "firebase/firestore";
+import { TForm } from "./@types";
+import { useAuthState } from "@/common/hooks/useAuthState";
 
 export const submit = async (
-  formData: IForm,
-  setError: UseFormSetError<IForm>,
-  setGreetings: () => void
+  formData: TForm,
+  setError: UseFormSetError<TForm>,
+  callback: () => void
 ) => {
   if (formData.confirmPassword !== formData.password) {
     setError("confirmPassword", { message: "Missmatch passwords" });
@@ -24,18 +27,23 @@ export const submit = async (
       formData.email,
       formData.password
     );
-    setGreetings();
     const userData = {
       email: formData.email,
       instagramLogin: formData.instagramLogin,
     };
+
     await setDoc(doc(db, "users", userCredential.user.uid), {
       ...userData,
     });
 
+    await signInWithEmailAndPassword(auth, formData.email, formData.password);
+
+    callback();
+
     await sendEmailVerification(userCredential.user, {
-      url: process.env.NEXT_PUBLIC_HOST!
+      url: process.env.NEXT_PUBLIC_EMAIL_REDIRECT!,
     });
+
     return true;
   } catch (error) {
     if (error instanceof FirebaseError) {
@@ -56,7 +64,6 @@ export const submit = async (
       }
     } else {
       setError("root", { message: "Server error." });
-      console.error(error);
       return false;
     }
   }

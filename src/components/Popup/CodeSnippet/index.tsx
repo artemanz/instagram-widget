@@ -5,9 +5,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { AiOutlineCopy } from "react-icons/ai";
 
-interface Props {}
-
-const CodeSnippetPopup = (props: Props) => {
+const CodeSnippet = () => {
   const {
     header,
     headerComponents: {
@@ -19,12 +17,12 @@ const CodeSnippetPopup = (props: Props) => {
       profilePicture,
       username,
       verifiedBadge,
-    },
+    },theme: {backgroundColor,textColor,transparentBackground}
   } = useStore(widgetStore);
   const { user } = useStore(authStore);
   const [copyMessage, setCopyMessage] = useState(false);
 
-  const code = `<div id="instagram-widget-weblab"><script>const CONFIG={login:"${user?.instagramLogin}",header:${header},profile_picture:${profilePicture.checked},full_name:${fullName.checked},username:${username.checked},verifiedBadge:${verifiedBadge.checked},postCount:${postCount.checked},followersCount:${followersCount.checked},followingCount:${followingCount.checked},followButton:${followButton.checked}}</script><script src="${process.env.NEXT_PUBLIC_SCRIPT_SRC}"></script></div>`;
+  const code = `<div id="instagram-widget-weblab"><script>const CONFIG={login:"${user?.instagramLogin}",header:${header},profile_picture:${profilePicture.checked},full_name:${fullName.checked},username:${username.checked},verifiedBadge:${verifiedBadge.checked},postCount:${postCount.checked},followersCount:${followersCount.checked},followingCount:${followingCount.checked},followButton:${followButton.checked},backgroundColor:${transparentBackground?"\"transparent\"":backgroundColor},color:"${textColor}"}</script><script src="${process.env.NEXT_PUBLIC_API}"></script></div>`;
 
   return (
     <motion.div
@@ -68,8 +66,4 @@ const CodeSnippetPopup = (props: Props) => {
   );
 };
 
-export { CodeSnippetPopup };
-
-/**
-
- */
+export { CodeSnippet };

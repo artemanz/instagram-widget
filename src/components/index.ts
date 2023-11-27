@@ -1,1 +1,1 @@
-export { Loader } from "./Loader";
+export { Popup } from "./Popup";

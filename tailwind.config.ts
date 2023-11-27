@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        "desktop": "980px"
+      },
       backgroundImage: {
         "gradient-primary": "linear-gradient(180deg, #FEB76B 0%, #FE7BC2 47.92%, #BF95F9 100%);"
       },

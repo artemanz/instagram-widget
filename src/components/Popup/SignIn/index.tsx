@@ -1,32 +1,30 @@
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
-import { submit } from "./useSignIn";
-import { Dispatch, SetStateAction, useState } from "react";
+import { submit } from "./submit";
+import { useRouter } from "next/navigation";
+import { popupApi } from "@/stores/popup";
+import { TForm } from "./@types";
+import { useState } from "react";
 
-interface Props {
-  changeAuthType: Dispatch<SetStateAction<IPopups>>;
-}
-
-const SignIn = ({ changeAuthType }: Props) => {
+const SignIn = () => {
+  const { setPopup } = popupApi;
+  const [loading, setLoading] = useState(false);
   const {
     register,
     formState: { errors },
     handleSubmit,
     setError,
-  } = useForm<IForm>();
+  } = useForm<TForm>();
 
-  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   return (
     <div className="relative ">
       <motion.form
-        onSubmit={handleSubmit((formData) => {
+        onSubmit={handleSubmit(async (formData) => {
           setLoading(true);
-          submit(formData, setError)
-            .then((res) => {
-              if (res) changeAuthType(null);
-            })
-            .finally(() => setLoading(false));
+          await submit(formData, setError, () => router.push("/constructor"));
+          setLoading(false);
         })}
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
@@ -66,18 +64,14 @@ const SignIn = ({ changeAuthType }: Props) => {
             <p className="text-center text-error">{errors.root?.message}</p>
           )}
           <button type="submit" className="mt-4 btn btn-primary">
-            {loading ? (
-              <span className="loading loading-spinner"></span>
-            ) : (
-              "Login"
-            )}
+            {loading ? <span className="loading loading-spinner" /> : "Login"}
           </button>
         </div>
         <div className="mt-4 text-center label-text-alt">
           Still don't have an account? <br />
           Try to{" "}
           <button
-            onClick={() => changeAuthType("signup")}
+            onClick={() => setPopup("signup")}
             type="button"
             className="underline transition-colors hover:text-primary"
           >

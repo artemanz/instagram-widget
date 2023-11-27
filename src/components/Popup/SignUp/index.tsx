@@ -1,20 +1,22 @@
 import { motion } from "framer-motion";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { HiEye, HiEyeOff } from "react-icons/hi";
-import { submit } from "./useSignUp";
+import { submit } from "./submit";
+import { TForm } from "./@types";
+import { popupApi } from "@/stores/popup";
+import { useRouter } from "next/navigation";
+import { useAuthState } from "@/common/hooks/useAuthState";
 
-interface Props {
-  changeAuthType: Dispatch<SetStateAction<IPopups>>;
-}
-
-const SignUp = ({ changeAuthType }: Props) => {
+const SignUp = () => {
   const {
     handleSubmit,
     register,
     setError,
     formState: { errors },
-  } = useForm<IForm>();
+  } = useForm<TForm>();
+
+  const { setPopup } = popupApi;
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -23,14 +25,14 @@ const SignUp = ({ changeAuthType }: Props) => {
     else setShowPassword(true);
   };
 
+  const router = useRouter();
   return (
     <div className="relative ">
       <motion.form
-        onSubmit={handleSubmit((formData) => {
+        onSubmit={handleSubmit(async (formData) => {
           setLoading(true);
-          submit(formData, setError, () => changeAuthType("greetings")).finally(
-            () => setLoading(false)
-          );
+          await submit(formData, setError, () => router.push("/constructor"));
+          setLoading(false);
         })}
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
@@ -123,7 +125,7 @@ const SignUp = ({ changeAuthType }: Props) => {
           Already have an account? <br />
           Try to{" "}
           <button
-            onClick={() => changeAuthType("login")}
+            onClick={() => setPopup("login")}
             type="button"
             className="underline transition-colors hover:text-primary"
           >

@@ -1,37 +1,32 @@
-import { Dispatch, useEffect, useState } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { widgetApi, widgetStore } from "@/stores/widget";
 import { useStore } from "effector-react";
+import { popupApi } from "@/stores/popup";
+import Link from "next/link";
 
-interface Props {
-  setPublishPopup: Dispatch<boolean>;
-}
-
-export const Header = ({ setPublishPopup }: Props) => {
+export const Header = () => {
   const { constructorState } = useStore(widgetStore);
   const { setConstructorState } = widgetApi;
   const router = useRouter();
+
+  const { setPopup } = popupApi;
 
   const [title, setTitle] = useState("");
   const [publish, setPublish] = useState(false);
 
   useEffect(() => {
     switch (constructorState) {
-      case "template":
+      case "theme":
         setTitle("Choose Template");
         setPublish(false);
         break;
       case "components":
-        setTitle("Header");
+        setTitle("Customize");
         setPublish(true);
         break;
-      case "language":
-        setTitle("Language");
-        setPublish(true);
-        break;
-      default:
-        setTitle("");
-        setPublish(false);
     }
   }, [constructorState]);
 
@@ -41,9 +36,8 @@ export const Header = ({ setPublishPopup }: Props) => {
         <button
           className="transition-transform active:scale-90"
           onClick={() => {
-            if (constructorState === "template") router.back();
-            if (constructorState === "components")
-              setConstructorState("template");
+            if (constructorState === "theme") router.back();
+            if (constructorState === "components") setConstructorState("theme");
           }}
         >
           <svg
@@ -62,16 +56,18 @@ export const Header = ({ setPublishPopup }: Props) => {
 
         <p>{title}</p>
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-center">
           <button
             disabled={!publish}
             className="btn btn-success"
-            onClick={() => setPublishPopup(true)}
+            onClick={() => setPopup("widget_code")}
           >
             Publish
           </button>
 
-          <button className="link link-hover">Close</button>
+          <Link href="/" className="link link-hover">
+            Close
+          </Link>
         </div>
       </div>
     </header>

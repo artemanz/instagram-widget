@@ -6,8 +6,12 @@ type THeaderComponent = {
 };
 
 export type TWidgetStore = {
-  constructorState: "template" | "components" | "language";
-  theme: "light_theme" | "dark_theme" | "transparent_theme";
+  constructorState: "theme" | "components" | "language";
+  theme: {
+    backgroundColor: string;
+    textColor: string;
+    transparentBackground: boolean;
+  };
   view: "desktop" | "mobile";
   header: boolean;
   headerComponents: {
@@ -23,8 +27,12 @@ export type TWidgetStore = {
 };
 
 export const widgetStore = createStore<TWidgetStore>({
-  constructorState: "template",
-  theme: "light_theme",
+  constructorState: "theme",
+  theme: {
+    backgroundColor: "#ffffff",
+    textColor: "#000000",
+    transparentBackground: true,
+  },
   view: "desktop",
   header: true,
   headerComponents: {
@@ -68,9 +76,23 @@ export const widgetApi = createApi(widgetStore, {
     ...store,
     constructorState: newState,
   }),
-  pickTheme: (store, theme: TWidgetStore["theme"]) => ({
+  changeThemeBackground: (
+    store,
+    color: TWidgetStore["theme"]["backgroundColor"]
+  ) => ({
     ...store,
-    theme,
+    theme: { ...store.theme, backgroundColor: color },
+  }),
+  changeThemeBackgroundTransparency: (
+    store,
+    transparent: TWidgetStore["theme"]["transparentBackground"]
+  ) => ({
+    ...store,
+    theme: { ...store.theme, transparentBackground: transparent },
+  }),
+  changeThemeColor: (store, color: TWidgetStore["theme"]["textColor"]) => ({
+    ...store,
+    theme: { ...store.theme, textColor: color },
   }),
   pickView: (store, view: TWidgetStore["view"]) => ({
     ...store,

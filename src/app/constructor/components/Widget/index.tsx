@@ -1,26 +1,30 @@
-import { AiOutlineInstagram } from "react-icons/ai";
-import { widgetStore } from "@/stores/widget";
+"use client";
+
+import {
+  AiOutlineDesktop,
+  AiOutlineInstagram,
+  AiOutlineMobile,
+} from "react-icons/ai";
+import { widgetApi, widgetStore } from "@/stores/widget";
 import { useStore } from "effector-react";
 import { HiVideoCamera, HiSquare2Stack } from "react-icons/hi2";
-import { RiVerifiedBadgeFill } from "react-icons/ri";
+import { TInstagramData } from "../../@types";
 import { useQuery } from "react-query";
 import { authStore } from "@/stores/auth";
-import { Loader } from "@/components";
-import { useEffect } from "react";
-interface Props {}
+import { Loader } from "@/components/UI";
 
-const Widget = (props: Props) => {
-  const { theme, view, header, headerComponents } = useStore(widgetStore);
+const Widget = () => {
   const { user } = useStore(authStore);
+  const { pickView } = widgetApi;
+  const { theme, view, header, headerComponents } = useStore(widgetStore);
 
   const { isLoading, error, data } = useQuery(
     "instagramData",
     () =>
-      fetch("https://weblab420.com/widget/v1/api/simple", {
+      fetch(process.env.NEXT_PUBLIC_API!, {
         headers: { Accept: "*/*", "Content-Type": "application/json" },
         method: "POST",
         body: JSON.stringify({
-          email: user!.email,
           username: user!.instagramLogin,
         }),
       }).then((res) => {
@@ -28,35 +32,70 @@ const Widget = (props: Props) => {
       }),
     {
       select: (data) => {
-        const parsedData = JSON.parse(data.fb_data);
-        return parsedData.business_discovery as TInstagramData;
+        return data as TInstagramData;
       },
       enabled: !!user,
     }
   );
 
-  if (isLoading)
+  if (isLoading) {
     return (
       <div className="grid place-content-center text-primary h-full">
         <Loader />
       </div>
     );
+  }
 
-  if (data)
+  if (error || !data)
     return (
+      <div className="grid place-content-center text-lg h-full">
+        Error while downloading instagram data <br/>
+      </div>
+    );
+
+  return (
+    <div className="flex flex-col items-center py-4 overflow-y-auto custom-scrollbar">
+      <div className="desktop:flex gap-4 mx-auto hidden">
+        <button
+          onClick={() => pickView("desktop")}
+          className={` w-12 h-12 flex items-center justify-center rounded-lg transition-colors ${
+            view === "desktop"
+              ? "bg-secondary text-white"
+              : "bg-neutral-200 hover:bg-neutral-300 text-neutral-500"
+          }`}
+        >
+          <AiOutlineDesktop />
+        </button>
+        <button
+          onClick={() => pickView("mobile")}
+          className={` w-12 h-12 flex items-center justify-center rounded-lg  transition-colors ${
+            view === "mobile"
+              ? "bg-secondary text-white"
+              : "bg-neutral-200 hover:bg-neutral-300 text-neutral-500"
+          }`}
+        >
+          <AiOutlineMobile />
+        </button>
+      </div>
       <div
-        className="mt-8 flex flex-col items-center max-w-fit mx-auto"
+        style={{
+          backgroundColor: theme.transparentBackground
+            ? "transparent"
+            : theme.backgroundColor,
+          color: theme.textColor,
+        }}
+        className="desktop:mt-8 flex flex-col items-center max-w-fit mx-auto p-4 rounded-xl"
       >
         {/* HEADER */}
         {header && (
           <div
-            className={`flex items-center gap-x-12 gap-y-4 py-4 ${
-              view === "desktop" ? "flex-row" : "flex-col"
+            className={`flex items-center gap-x-12 gap-y-4 py-4 flex-col ${
+              view === "desktop" ? "desktop:flex-row" : ""
             }`}
           >
             <div className="flex items-center gap-4">
               {headerComponents.profilePicture.checked && (
-                <div className="p-0.5 rounded-full bg-gradient-primary overflow-hidden">
+                <div className="p-0.5 rounded-full bg-gradient-primary overflow-hidden flex-shrink-0">
                   <img
                     className="rounded-full w-14"
                     src={data.profile_picture_url}
@@ -75,9 +114,9 @@ const Widget = (props: Props) => {
                     <small className="text-neutral-400">@{data.username}</small>
                   )}
                 </div>
-                {headerComponents.verifiedBadge.checked && (
+                {/* {headerComponents.verifiedBadge.checked && (
                   <RiVerifiedBadgeFill className="text-blue-500" />
-                )}
+                )} */}
               </div>
             </div>
 
@@ -113,8 +152,8 @@ const Widget = (props: Props) => {
         )}
 
         <ul
-          className={`grid ${
-            view === "desktop" ? "grid-cols-3" : "grid-cols-[minmax(0,300px)] justify-items-center"
+          className={`grid grid-cols-[minmax(0,300px)] justify-items-center ${
+            view === "desktop" ? "desktop:grid-cols-3" : ""
           }`}
         >
           {data.media.data.slice(0, 9).map((post) => (
@@ -123,7 +162,7 @@ const Widget = (props: Props) => {
               className="relative transition-transform cursor-pointer w-52 aspect-square"
             >
               {post.media_type === "VIDEO" ? (
-                <video className="w-full" autoPlay loop src={post.media_url} />
+                <video className="w-full" loop src={post.media_url} />
               ) : (
                 <img
                   className="w-full"
@@ -153,9 +192,8 @@ const Widget = (props: Props) => {
           </button>
         </div>
       </div>
-    );
-
-  return null;
+    </div>
+  );
 };
 
 export { Widget };

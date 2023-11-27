@@ -1,4 +1,4 @@
-interface IForm {
+export type TForm = {
   email: string;
   password: string;
-}
+};

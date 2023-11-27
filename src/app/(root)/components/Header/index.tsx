@@ -1,56 +1,32 @@
-import { Dispatch, useEffect, useState } from "react";
 import Link from "next/link";
 import { Logo } from "./Logo";
 import { authStore } from "@/stores/auth";
 import { useStore } from "effector-react";
+import { popupApi } from "@/stores/popup";
 
-interface Props {
-  setauthType: Dispatch<IPopups>;
-}
-
-export const Header = ({ setauthType }: Props) => {
+export const Header = () => {
   const { user } = useStore(authStore);
-  const [signButtons, setSignButtons] = useState(false);
+  const { setPopup } = popupApi;
 
-  useEffect(() => {
-    setSignButtons(true);
-  }, []);
-
-  const HeaderContent = () => {
-    if (user)
-      return (
-        <div className="container flex items-center justify-between py-4">
-          <Link href={"/"}>
-            <Logo />
-          </Link>
-          <div className="flex items-center gap-8">
+  return (
+    <header className="relative bg-base-200">
+      <div className="container flex justify-between py-4">
+        <Link href={"/"}>
+          <Logo />
+        </Link>
+        <div className="flex gap-4">
+          {user ? (
             <button
-              onClick={() => setauthType("signout")}
+              onClick={() => setPopup("signout")}
               className="link link-hover"
             >
               Sign Out
             </button>
-          </div>
+          ) : (
+            <button onClick={() => setPopup("login")}>Login</button>
+          )}
         </div>
-      );
-    else
-      return (
-        <div className="container flex justify-between py-4">
-          <Link href={"/"}>
-            <Logo />
-          </Link>
-          <div className="flex gap-4">
-            <button onClick={() => setauthType("login")}>
-              {signButtons ? "Login" : <span className="loading"></span>}
-            </button>
-          </div>
-        </div>
-      );
-  };
-
-  return (
-    <header className="relative bg-base-200">
-      <HeaderContent />
+      </div>
     </header>
   );
 };

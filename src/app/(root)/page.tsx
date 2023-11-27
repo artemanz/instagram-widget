@@ -3,18 +3,19 @@
 import Link from "next/link";
 import backgroundImage from "./images/background.png";
 import Image from "next/image";
-import { authStore } from "@/stores/auth";
+import { Header } from "./components";
+import { Popup } from "@/components";
 import { useStore } from "effector-react";
-import { useState } from "react";
-import { Header, Popup } from "./components";
+import { authStore } from "@/stores/auth";
+import { popupApi } from "@/stores/popup";
 
 export default function Home() {
   const { user } = useStore(authStore);
-  const [authType, setauthType] = useState<IPopups>(null);
+  const { setPopup } = popupApi;
 
   return (
     <div className="grid h-screen [grid-auto-rows:auto_minmax(0,1fr)]">
-      <Header setauthType={setauthType} />
+      <Header />
 
       <main className="bg-gradient-primary relative">
         <Image
@@ -25,38 +26,31 @@ export default function Home() {
           className="object-cover z-0"
         />
         <div className="container relative text-center flex items-center flex-col justify-center h-full gap-4">
-          <p className="text-base-200 text-2xl">
+          <p className="text-base-300 text-2xl">
             Build Your Perfect <br className="md:hidden" /> Instagram Feed
             Widget
           </p>
-          <h1 className="text-base-200 md:text-5xl text-4xl font-bold">
+          <h1 className="text-base-300 md:text-5xl text-4xl font-bold">
             Automatic Instagram Post <br className="hidden sm:block" /> Display
             on Your Website
           </h1>
-          {user ? (
-            <Link className="btn mt-4 btn-wide btn-lg" href={"/constructor"}>
-              Create Widget
-            </Link>
-          ) : (
-            <button
-              className="btn mt-4 btn-wide btn-lg"
-              onClick={() => setauthType("login")}
-            >
-              Create Widget
-            </button>
-          )}
+
+          <Link
+            onClick={(e) => {
+              if (!user) {
+                e.preventDefault();
+                setPopup("login");
+              }
+            }}
+            className="btn mt-4 btn-wide btn-lg"
+            href={"/constructor"}
+          >
+            Create Widget
+          </Link>
         </div>
       </main>
 
-      {authType && (
-        <div className="fixed inset-0 z-20 grid place-content-center">
-          <div
-            onClick={() => setauthType(null)}
-            className="fixed inset-0 bg-black bg-opacity-50"
-          />
-          <Popup authType={authType} setauthType={setauthType} />
-        </div>
-      )}
+      <Popup />
     </div>
   );
 }

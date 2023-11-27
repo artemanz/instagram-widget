@@ -2,23 +2,16 @@ import { auth } from "@/lib/firebase";
 import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { UseFormSetError } from "react-hook-form";
+import { TForm } from "./@types";
 
 export const submit = async (
-  formData: IForm,
-  setError: UseFormSetError<IForm>
+  formData: TForm,
+  setError: UseFormSetError<TForm>,
+  callback: () => void
 ) => {
   try {
-    const data = await signInWithEmailAndPassword(
-      auth,
-      formData.email,
-      formData.password
-    );
-
-    if (!data.user.emailVerified) {
-      setError("root", { message: "Email is not verified." });
-      return false;
-    }
-
+    await signInWithEmailAndPassword(auth, formData.email, formData.password);
+    callback();
     return true;
   } catch (error) {
     if (error instanceof FirebaseError) {

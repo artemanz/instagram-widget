@@ -1,6 +1,8 @@
+"use client"
+
 import { useEffect, useState } from "react";
 import { HeaderSidebar } from "./HeaderSidebar";
-import { TemplateSidebar } from "./TemplateSidebar";
+import { ThemeSidebar } from "./ThemeSidebar";
 import clsx from "clsx";
 import { LanguageSidebar } from "./LanguageSidebar";
 import { useStore } from "effector-react";
@@ -15,7 +17,7 @@ export const Sidebar = () => {
   }, [constructorState]);
 
   return (
-    <aside className="relative z-20 hidden p-5 text-white bg-base-200 lg:flex">
+    <aside className="relative z-20 desktop:flex p-5 text-white bg-base-200 hidden">
       <div className="flex flex-col justify-between w-full h-full gap-8">
         <div className="flex w-full overflow-hidden">
           <div
@@ -25,7 +27,7 @@ export const Sidebar = () => {
               sidebarView === "language" && "translate-x-[-200%]"
             )}
           >
-            <TemplateSidebar />
+            <ThemeSidebar />
             <button
               onClick={() => widgetApi.setConstructorState("components")}
               className="btn btn-success"

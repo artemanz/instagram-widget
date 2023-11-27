@@ -11,7 +11,9 @@ export const authStore = createStore<AuthStore>({
 });
 
 export const authApi = createApi(authStore, {
-  setUser: (store, user) => ({ ...store, user }),
+  setUser: (store, user) => {
+    return { ...store, user };
+  },
   logOut() {
     signOut(auth);
   },
