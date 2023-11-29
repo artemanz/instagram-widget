@@ -22,7 +22,7 @@ const CodeSnippet = () => {
   const { user } = useStore(authStore);
   const [copyMessage, setCopyMessage] = useState(false);
 
-  const code = `<div id="instagram-widget-weblab"><script>const CONFIG={login:"${user?.instagramLogin}",header:${header},profile_picture:${profilePicture.checked},full_name:${fullName.checked},username:${username.checked},verifiedBadge:${verifiedBadge.checked},postCount:${postCount.checked},followersCount:${followersCount.checked},followingCount:${followingCount.checked},followButton:${followButton.checked},backgroundColor:${transparentBackground?"\"transparent\"":backgroundColor},color:"${textColor}"}</script><script src="${process.env.NEXT_PUBLIC_API}"></script></div>`;
+  const code = `<div id="instagram-widget-weblab"></div><script>window.WEBLAB_WIDGET_CONFIG={login:"${user?.instagramLogin}",header:${header},profile_picture:${profilePicture.checked},full_name:${fullName.checked},username:${username.checked},verifiedBadge:${verifiedBadge.checked},postCount:${postCount.checked},followersCount:${followersCount.checked},followingCount:${followingCount.checked},followButton:${followButton.checked},backgroundColor:${transparentBackground?"\"transparent\"":backgroundColor},color:"${textColor}"}</script><script src="${process.env.NEXT_PUBLIC_API}"></script>`;
 
   return (
     <motion.div
