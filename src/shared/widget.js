@@ -51,6 +51,8 @@ function instagramWidget() {
   #instagram-widget-weblab {
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
     max-width: 800px;
+    padding: 1rem;
+    border-radius: 0.75rem;
     margin-left: auto;
     margin-right: auto;
     font-size: 16px;
@@ -61,6 +63,9 @@ function instagramWidget() {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+  }
+  #instagram-widget-weblab p {
+    color: ${CONFIG.color};
   }
   #instagram-widget-weblab ul {
     list-style: none;
