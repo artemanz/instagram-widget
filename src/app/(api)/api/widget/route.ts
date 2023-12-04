@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-const ACCESS_TOKEN = `EAASu7wQRZBeQBOxwAmqY5UsGXKi058QlByuACMyqiidhfLZB8vqpSQ99Md5CxlxiAZBo4iQw4zNv1S Lm3DR8V32cZCBRdGRZCKFdLSnNHoxjTZCCeTqxjInNmLX0EZAn45MokLgUHda824vNCkpcX9OtFg8HPPwwBRNcVnMJSA9qicIYLeolTxzRn86N6zVKAZB5CtSRYnTf`;
+const ACCESS_TOKEN = `EAASu7wQRZBeQBOwvvBieH0HA72Tr8ZAgshwYmaTxPfNZCsVQAO6xTqxGDFgMqpHPZBCw4BNLF2PChkajyEcxTT8o62kZCUuxL9lam731F5in7h5uoQ9RmLZAB4TbgcznRwNbt1tQn4DYDhCOLO0gPdPiTZB8ZBAW8e5QnZCbDhxBF1GhHe8oQ0nCrfZAwesX6xWdBpcg8WNitcCQZDZD`;
 const FIELDS =
   "{name,followers_count,follows_count,username,media_count,biography,profile_picture_url," +
   "media.limit(12){comments_count,caption,like_count,permalink,media_type,media_url}}";
@@ -13,15 +13,12 @@ export const POST = async (req: Request) => {
   try {
     const res = await fetch(URL);
     const data = await res.json();
-    if (data.error) {
-      throw new Error(data.error.error_user_msg);
-    }
+
+    if (data.error) throw new Error(data.error.error_user_msg);
+
     return Response.json(data.business_discovery);
   } catch (error) {
-    let message = "Server Error";
-    if (error instanceof Error) message = error.message;
-
-    return Response.json({ error: message }, { status: 400 });
+    return Response.json(null, { status: 400 });
   }
 };
 

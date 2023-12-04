@@ -12,6 +12,7 @@ import { TInstagramData } from "../../@types";
 import { useQuery } from "react-query";
 import { authStore } from "@/stores/auth";
 import { Loader } from "@/components/UI";
+import { useEffect } from "react";
 
 const Widget = () => {
   const { user } = useStore(authStore);
@@ -49,7 +50,7 @@ const Widget = () => {
   if (error || !data)
     return (
       <div className="grid place-content-center text-lg h-full">
-        Error while downloading instagram data <br/>
+        Error while downloading instagram data <br />
       </div>
     );
 
@@ -84,13 +85,13 @@ const Widget = () => {
             : theme.backgroundColor,
           color: theme.textColor,
         }}
-        className="desktop:mt-8 flex flex-col items-center max-w-fit mx-auto p-4 rounded-xl"
+        className="desktop:mt-8 flex flex-col items-center max-w-[50rem] mx-auto p-4 rounded-xl"
       >
         {/* HEADER */}
         {header && (
           <div
             className={`flex items-center gap-x-12 gap-y-4 py-4 flex-col ${
-              view === "desktop" ? "desktop:flex-row" : ""
+              view === "desktop" ? "desktop:flex-row" : "max-w-xs"
             }`}
           >
             <div className="flex items-center gap-4">
@@ -159,13 +160,17 @@ const Widget = () => {
           {data.media.data.slice(0, 9).map((post) => (
             <li
               key={post.id}
-              className="relative transition-transform cursor-pointer w-52 aspect-square"
+              className="relative transition-transform cursor-pointer aspect-square group"
             >
               {post.media_type === "VIDEO" ? (
-                <video className="w-full" loop src={post.media_url} />
+                <video
+                  className="w-full h-full object-cover object-top"
+                  loop
+                  src={post.media_url}
+                />
               ) : (
                 <img
-                  className="w-full"
+                  className="w-full h-full object-cover object-top"
                   src={post.media_url}
                   alt={"Post image"}
                 />
@@ -181,6 +186,11 @@ const Widget = () => {
                   className="absolute rotate-180 top-2 right-2 text-neutral-50"
                   size={24}
                 />
+              )}
+              {post.caption && (
+                <div className="absolute inset-0 bg-black/75 text-white scale-y-0 origin-bottom transition-transform group-hover:scale-y-100 p-4 overflow-hidden after:absolute after:inset-0 after:bg-[linear-gradient(to_bottom,_transparent_50%,_black_100%)]">
+                  <pre className="font-[inherit] whitespace-pre-line">{post.caption}</pre>
+                </div>
               )}
             </li>
           ))}

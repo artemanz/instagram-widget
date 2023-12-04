@@ -5,10 +5,14 @@ import { useRouter } from "next/navigation";
 import { popupApi } from "@/stores/popup";
 import { TForm } from "./@types";
 import { useState } from "react";
+import { HiEyeOff } from "react-icons/hi";
+import { HiEye } from "react-icons/hi2";
 
 const SignIn = () => {
   const { setPopup } = popupApi;
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
   const {
     register,
     formState: { errors },
@@ -17,6 +21,11 @@ const SignIn = () => {
   } = useForm<TForm>();
 
   const router = useRouter();
+
+  const togglePassword = () => {
+    if (showPassword) setShowPassword(false);
+    else setShowPassword(true);
+  };
 
   return (
     <div className="relative ">
@@ -42,22 +51,29 @@ const SignIn = () => {
             className="input input-bordered"
           />
         </div>
-        <div className="form-control">
+        <div className="form-control relative">
           <label className="label">
             <span className="label-text">Password</span>
           </label>
           <input
             {...register("password", { required: true })}
             aria-invalid={errors.password ? true : false}
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="password"
             className="input input-bordered"
           />
-          <label className="label">
+          <button
+            onClick={togglePassword}
+            type="button"
+            className="absolute bottom-3.5 right-3.5 text-current text-xl"
+          >
+            {showPassword ? <HiEyeOff /> : <HiEye />}
+          </button>
+          {/* <label className="label">
             <button type="button" className="label-text-alt link link-hover">
               Forgot password?
             </button>
-          </label>
+          </label> */}
         </div>
         <div className="mt-6 form-control">
           {errors.root && (

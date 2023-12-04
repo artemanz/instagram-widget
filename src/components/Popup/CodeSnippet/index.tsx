@@ -1,9 +1,10 @@
 import { authStore } from "@/stores/auth";
+import { popupApi } from "@/stores/popup";
 import { widgetStore } from "@/stores/widget";
 import { useStore } from "effector-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { AiOutlineCopy } from "react-icons/ai";
+import { AiOutlineCopy, AiOutlineClose } from "react-icons/ai";
 
 const CodeSnippet = () => {
   const {
@@ -17,12 +18,28 @@ const CodeSnippet = () => {
       profilePicture,
       username,
       verifiedBadge,
-    },theme: {backgroundColor,textColor,transparentBackground}
+    },
+    theme: { backgroundColor, textColor, transparentBackground },
   } = useStore(widgetStore);
   const { user } = useStore(authStore);
+  const { setPopup } = popupApi;
   const [copyMessage, setCopyMessage] = useState(false);
 
-  const code = `<div id="instagram-widget-weblab"></div><script>window.WEBLAB_WIDGET_CONFIG={login:"${user?.instagramLogin}",header:${header},profile_picture:${profilePicture.checked},full_name:${fullName.checked},username:${username.checked},verifiedBadge:${verifiedBadge.checked},postCount:${postCount.checked},followersCount:${followersCount.checked},followingCount:${followingCount.checked},followButton:${followButton.checked},backgroundColor:${transparentBackground?"\"transparent\"":`\"${backgroundColor}\"`},color:"${textColor}"}</script><script src="${process.env.NEXT_PUBLIC_API}"></script>`;
+  const code = `<div id="instagram-widget-weblab"></div><script>window.WEBLAB_WIDGET_CONFIG={login:"${
+    user?.instagramLogin
+  }",header:${header},profile_picture:${profilePicture.checked},full_name:${
+    fullName.checked
+  },username:${username.checked},verifiedBadge:${
+    verifiedBadge.checked
+  },postCount:${postCount.checked},followersCount:${
+    followersCount.checked
+  },followingCount:${followingCount.checked},followButton:${
+    followButton.checked
+  },backgroundColor:${
+    transparentBackground ? '"transparent"' : `\"${backgroundColor}\"`
+  },color:"${textColor}"}</script><script src="${
+    process.env.NEXT_PUBLIC_API
+  }"></script>`;
 
   return (
     <motion.div
@@ -30,6 +47,9 @@ const CodeSnippet = () => {
       animate={{ opacity: 1, y: 0 }}
       className="p-6 bg-base-100 rounded-2xl text-white relative max-w-3xl mx-4 w-[80vw]"
     >
+      <button onClick={() => setPopup(null)} className="absolute right-3 top-3">
+        <AiOutlineClose size={20} />
+      </button>
       <p>
         Copy and paste this code into desired place of your website (HTML
         editor, website template, theme, etc.).
