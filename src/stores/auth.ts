@@ -1,16 +1,15 @@
-import { auth } from "@/lib/firebase";
-import { createApi, createStore } from "effector";
+import { auth, db } from "@/lib/firebase";
+import { createApi, createEffect, createStore } from "effector";
 import { signOut } from "firebase/auth";
-import { TFeedWidget } from "./feed";
+import { TWidget } from "./widget";
+import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 
 type AuthStore = {
-  user: { email: string } | null;
-  feed: TFeedWidget[];
+  user: { email: string; id: string; feed: TWidget[] } | null;
 };
 
 export const authStore = createStore<AuthStore>({
   user: null,
-  feed: [],
 });
 
 export const authApi = createApi(authStore, {
@@ -24,3 +23,18 @@ export const authApi = createApi(authStore, {
     signOut(auth);
   },
 });
+
+export const addRefToFeed = createEffect(
+  async ({ userId, widgetId }: { userId: string; widgetId: string }) => {
+    await updateDoc(doc(db, "users", userId), {
+      feed: arrayUnion(doc(db, "widgets", widgetId)),
+    });
+  }
+);
+export const removeRefFromFeed = createEffect(
+  async ({ userId, widgetId }: { userId: string; widgetId: string }) => {
+    await updateDoc(doc(db, "users", userId), {
+      feed: arrayRemove(doc(db, "widgets", widgetId)),
+    });
+  }
+);

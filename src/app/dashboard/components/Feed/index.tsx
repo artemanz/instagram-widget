@@ -1,6 +1,6 @@
 "use client";
 
-import { feedApi, feedStore } from "@/stores/feed";
+import { feedApi, feedStore, removeWidgetFromDb } from "@/stores/feed";
 import { popupApi } from "@/stores/popup";
 import { widgetApi } from "@/stores/widget";
 import { useStore } from "effector-react";
@@ -13,11 +13,14 @@ import {
 } from "react-icons/hi";
 import { useRouter } from "next/navigation";
 import { PATH } from "@/common/path";
+import { authStore, removeRefFromFeed } from "@/stores/auth";
 
 const Feed = () => {
   const router = useRouter();
-  const { reset, setUsername, setWidgetData } = widgetApi;
+  const { reset, setWidgetData } = widgetApi;
   const { setPopup } = popupApi;
+
+  const { user } = useStore(authStore);
   const { feed } = useStore(feedStore);
   const { removeWidget } = feedApi;
 
@@ -71,7 +74,7 @@ const Feed = () => {
                 </p>
                 <button
                   onClick={() => {
-                    setUsername(w.username);
+                    setWidgetData(w);
                     router.push(PATH.CONSTRUCTOR);
                   }}
                   className="btn w-20 mt-6"
@@ -118,6 +121,8 @@ const Feed = () => {
                     <li
                       onClick={() => {
                         closeDropdown();
+                        removeWidgetFromDb(w);
+                        removeRefFromFeed({ userId: user!.id, widgetId: w.id });
                         removeWidget(w);
                       }}
                       className="p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer flex justify-between items-center text-primary"

@@ -1,23 +1,20 @@
-import { PATH } from "@/common/path";
 import { getInstagramData } from "@/common/querys/getInstagramData";
-import { TFeedWidget, feedApi } from "@/stores/feed";
+import { addRefToFeed, authStore } from "@/stores/auth";
+import { addWidgetToDb, feedApi } from "@/stores/feed";
 import { popupApi } from "@/stores/popup";
-import { initialWidget, widgetApi, widgetStore } from "@/stores/widget";
+import { initialWidget, widgetApi } from "@/stores/widget";
 import { useStore } from "effector-react";
 import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
-import { FormEvent, FormEventHandler, useState } from "react";
+import { FormEventHandler, useState } from "react";
 import { uid } from "uid";
 
 const InstagramLogin = () => {
-  const router = useRouter();
-
   const [usernameInput, setUsernameInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { user } = useStore(authStore);
 
-  const widgetData = useStore(widgetStore);
-  const { setUsername } = widgetApi;
+  const { setWidgetData } = widgetApi;
   const { addNewWidget } = feedApi;
   const { setPopup } = popupApi;
 
@@ -27,15 +24,21 @@ const InstagramLogin = () => {
     const res = await getInstagramData(usernameInput);
     if (!res) setError("User doesn't exist");
     else {
-      setError("");
-      setPopup(null);
-      setUsername(usernameInput);
-      addNewWidget({
-        ...(initialWidget as TFeedWidget),
+      const newWidget = {
+        ...initialWidget,
         id: uid(),
-        created: Date.now(),
+        created: new Date(),
         username: usernameInput,
-      });
+      };
+      setError("");
+
+      const ref = await addWidgetToDb(newWidget);
+      if (ref) {
+        setWidgetData(newWidget);
+        addRefToFeed({ userId: user!.id, widgetId: newWidget.id });
+        addNewWidget(newWidget);
+        setPopup(null);
+      }
     }
     setLoading(false);
   };

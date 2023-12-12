@@ -4,6 +4,7 @@ import { useAuthState } from "@/common/hooks/useAuthState";
 import { Popup } from "@/components";
 import { Loader } from "@/components/UI";
 import { authStore } from "@/stores/auth";
+import { feedApi } from "@/stores/feed";
 import { popupApi } from "@/stores/popup";
 import { widgetApi } from "@/stores/widget";
 import { useStore } from "effector-react";
@@ -18,12 +19,21 @@ const Root = ({ children }: PropsWithChildren) => {
   const { loading } = useAuthState();
   const { user } = useStore(authStore);
   const { setPopup } = popupApi;
-  const { setUsername } = widgetApi;
+  const { setWidgetData } = widgetApi;
+  const { setFeed } = feedApi;
 
   useEffect(() => {
-    const username = localStorage.getItem("instagram_username");
-    if (username && typeof JSON.parse(username) === "string")
-      setUsername(JSON.parse(username));
+    if (user) {
+      const widgetState = localStorage.getItem("widget_state");
+      if (widgetState)
+        setWidgetData(
+          JSON.parse(widgetState, (key, value) => {
+            if (key === "created") return new Date(value);
+            return value
+          })
+        );
+      setFeed(user.feed);
+    }
     setPopup(null);
   }, [user]);
 

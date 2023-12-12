@@ -8,7 +8,8 @@ type THeaderComponent = {
 export type TWidget = {
   id: string;
   username: string | null;
-  created: number;
+  created: Date;
+  active: boolean;
   constructorState: "theme" | "components" | "language";
   theme: {
     backgroundColor: string;
@@ -31,12 +32,13 @@ export type TWidget = {
 
 type TWidgetStore = Omit<TWidget, "created" | "id"> & {
   id?: string;
-  created?: number;
+  created?: Date;
 };
 
 export const initialWidget: TWidgetStore = {
   username: null,
   constructorState: "theme",
+  active: false,
   theme: {
     backgroundColor: "#ffffff",
     textColor: "#000000",
@@ -119,13 +121,14 @@ export const widgetApi = createApi(widgetStore, {
     return { ...state };
   },
   reset: () => {
-    localStorage.removeItem("instagram_username");
+    localStorage.removeItem("widget_state");
     return { ...initialWidget };
   },
   setUsername: (store, payload: TWidgetStore["username"]) => {
-    localStorage.setItem("instagram_username", JSON.stringify(payload));
-    if (!payload) localStorage.removeItem("instagram_username");
     return { ...store, username: payload };
   },
-  setWidgetData: (_, payload: TWidgetStore) => payload,
+  setWidgetData: (_, payload: TWidgetStore) => {
+    localStorage.setItem("widget_state", JSON.stringify(payload));
+    return payload;
+  },
 });

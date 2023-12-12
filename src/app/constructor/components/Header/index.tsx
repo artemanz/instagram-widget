@@ -2,22 +2,21 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { widgetStore } from "@/stores/widget";
+import { TWidget, widgetStore } from "@/stores/widget";
 import { useStore } from "effector-react";
-import { popupApi } from "@/stores/popup";
 import Link from "next/link";
 import { PATH } from "@/common/path";
+import { updateWidgetInDb } from "@/stores/feed";
 
 export const Header = () => {
-  const { constructorState } = useStore(widgetStore);
+  const widget = useStore(widgetStore);
   const router = useRouter();
-
-  const { setPopup } = popupApi;
+  console.log(widget);
 
   const [title, setTitle] = useState("");
 
   useEffect(() => {
-    switch (constructorState) {
+    switch (widget.constructorState) {
       case "theme":
         setTitle("Choose Template");
         break;
@@ -25,7 +24,7 @@ export const Header = () => {
         setTitle("Customize");
         break;
     }
-  }, [constructorState]);
+  }, [widget.constructorState]);
 
   return (
     <header className="z-10 bg-white shadow-md">
@@ -53,9 +52,12 @@ export const Header = () => {
         <div className="flex gap-4 items-center">
           <button
             className="btn btn-success"
-            onClick={() => setPopup("widget_code")}
+            onClick={() => {
+              updateWidgetInDb(widget as TWidget);
+              router.push(PATH.DASHBOARD);
+            }}
           >
-            Publish
+            Save
           </button>
 
           <Link href={PATH.DASHBOARD} className="link link-hover">

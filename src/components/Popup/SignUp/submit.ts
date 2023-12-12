@@ -32,7 +32,7 @@ export const submit = async (
 
     await setDoc(doc(db, "users", userCredential.user.uid), {
       ...userData,
-      widgets: []
+      feed: []
     });
 
     await signInWithEmailAndPassword(auth, formData.email, formData.password);
