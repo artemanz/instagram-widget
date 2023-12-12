@@ -18,8 +18,12 @@ const Root = ({ children }: PropsWithChildren) => {
   const { loading } = useAuthState();
   const { user } = useStore(authStore);
   const { setPopup } = popupApi;
+  const { setUsername } = widgetApi;
 
   useEffect(() => {
+    const username = localStorage.getItem("instagram_username");
+    if (username && typeof JSON.parse(username) === "string")
+      setUsername(JSON.parse(username));
     setPopup(null);
   }, [user]);
 
