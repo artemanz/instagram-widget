@@ -13,6 +13,7 @@
     "@types/react-icons": "^3.0.0",
     "axios": "^1.5.1",
     "clsx": "^2.0.0",
+    "date-fns": "^2.30.0",
     "effector": "^22.8.7",
     "effector-react": "^22.5.4",
     "encoding": "^0.1.13",
@@ -29,7 +30,8 @@
     "react-hook-form": "^7.47.0",
     "react-icons": "^4.11.0",
     "react-query": "^3.39.3",
-    "sharp": "^0.32.6"
+    "sharp": "^0.32.6",
+    "uid": "^2.0.2"
   },
   "devDependencies": {
     "@types/node": "^20",

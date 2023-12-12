@@ -2,43 +2,37 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { widgetApi, widgetStore } from "@/stores/widget";
+import { widgetStore } from "@/stores/widget";
 import { useStore } from "effector-react";
 import { popupApi } from "@/stores/popup";
 import Link from "next/link";
+import { PATH } from "@/common/path";
 
 export const Header = () => {
   const { constructorState } = useStore(widgetStore);
-  const { setConstructorState } = widgetApi;
   const router = useRouter();
 
   const { setPopup } = popupApi;
 
   const [title, setTitle] = useState("");
-  const [publish, setPublish] = useState(false);
 
   useEffect(() => {
     switch (constructorState) {
       case "theme":
         setTitle("Choose Template");
-        setPublish(false);
         break;
       case "components":
         setTitle("Customize");
-        setPublish(true);
         break;
     }
   }, [constructorState]);
 
   return (
     <header className="z-10 bg-white shadow-md">
-      <div className="flex items-center justify-between px-4 py-4 text-base-200">
+      <div className="flex items-center justify-between px-4 py-4">
         <button
           className="transition-transform active:scale-90"
-          onClick={() => {
-            if (constructorState === "theme") router.back();
-            if (constructorState === "components") setConstructorState("theme");
-          }}
+          onClick={() => router.back()}
         >
           <svg
             width="43"
@@ -54,18 +48,17 @@ export const Header = () => {
           </svg>
         </button>
 
-        <p>{title}</p>
+        <p className="hidden sm:block">{title}</p>
 
         <div className="flex gap-4 items-center">
           <button
-            disabled={!publish}
             className="btn btn-success"
             onClick={() => setPopup("widget_code")}
           >
             Publish
           </button>
 
-          <Link href="/" className="link link-hover">
+          <Link href={PATH.DASHBOARD} className="link link-hover">
             Close
           </Link>
         </div>

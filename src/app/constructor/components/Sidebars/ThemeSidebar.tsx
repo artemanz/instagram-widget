@@ -5,7 +5,6 @@ import {
   HexColorPicker,
   HexColorInput,
 } from "react-colorful";
-import "./colorPicker.css";
 
 export const ThemeSidebar = () => {
   const { theme } = useStore(widgetStore);

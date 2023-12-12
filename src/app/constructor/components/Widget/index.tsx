@@ -8,36 +8,14 @@ import {
 import { widgetApi, widgetStore } from "@/stores/widget";
 import { useStore } from "effector-react";
 import { HiVideoCamera, HiSquare2Stack } from "react-icons/hi2";
-import { TInstagramData } from "../../@types";
-import { useQuery } from "react-query";
-import { authStore } from "@/stores/auth";
 import { Loader } from "@/components/UI";
-import { useEffect } from "react";
+import { useInstagramData } from "@/common/hooks/useInstagramData";
 
 const Widget = () => {
-  const { user } = useStore(authStore);
   const { pickView } = widgetApi;
   const { theme, view, header, headerComponents } = useStore(widgetStore);
 
-  const { isLoading, error, data } = useQuery(
-    "instagramData",
-    () =>
-      fetch(process.env.NEXT_PUBLIC_API!, {
-        headers: { Accept: "*/*", "Content-Type": "application/json" },
-        method: "POST",
-        body: JSON.stringify({
-          username: user!.instagramLogin,
-        }),
-      }).then((res) => {
-        return res.json();
-      }),
-    {
-      select: (data) => {
-        return data as TInstagramData;
-      },
-      enabled: !!user,
-    }
-  );
+  const { data, error, isLoading } = useInstagramData();
 
   if (isLoading) {
     return (
@@ -189,7 +167,9 @@ const Widget = () => {
               )}
               {post.caption && (
                 <div className="absolute inset-0 bg-black/75 text-white scale-y-0 origin-bottom transition-transform group-hover:scale-y-100 p-4 overflow-hidden after:absolute after:inset-0 after:bg-[linear-gradient(to_bottom,_transparent_50%,_black_100%)]">
-                  <pre className="font-[inherit] whitespace-pre-line">{post.caption}</pre>
+                  <pre className="font-[inherit] whitespace-pre-line">
+                    {post.caption}
+                  </pre>
                 </div>
               )}
             </li>

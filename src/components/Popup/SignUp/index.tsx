@@ -7,6 +7,7 @@ import { TForm } from "./@types";
 import { popupApi } from "@/stores/popup";
 import { useRouter } from "next/navigation";
 import { useAuthState } from "@/common/hooks/useAuthState";
+import { PATH } from "@/common/path";
 
 const SignUp = () => {
   const {
@@ -31,12 +32,12 @@ const SignUp = () => {
       <motion.form
         onSubmit={handleSubmit(async (formData) => {
           setLoading(true);
-          await submit(formData, setError, () => router.push("/constructor"));
+          await submit(formData, setError, () => router.push(PATH.DASHBOARD));
           setLoading(false);
         })}
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
-        className="card-body bg-base-100 rounded-2xl"
+        className="card-body bg-base-100 rounded-2xl text-white"
       >
         {/* EMAIL */}
         <div className="form-control">
@@ -45,7 +46,7 @@ const SignUp = () => {
           </label>
           <input
             {...register("email", { required: true })}
-            aria-invalid={errors.email ? true : false}
+            aria-invalid={errors.email ? "true" : "false"}
             type="email"
             placeholder="email"
             className="input input-bordered"
@@ -59,7 +60,7 @@ const SignUp = () => {
           </label>
           <input
             {...register("password", { required: true })}
-            aria-invalid={errors.password ? true : false}
+            aria-invalid={errors.password ? "true" : "false"}
             type={showPassword ? "text" : "password"}
             placeholder="password"
             className="input input-bordered"
@@ -67,7 +68,7 @@ const SignUp = () => {
           <button
             onClick={togglePassword}
             type="button"
-            className="absolute bottom-3.5 right-3.5 text-current text-xl"
+            className="absolute bottom-3.5 right-3.5 text-current text-xl text-white"
           >
             {showPassword ? <HiEyeOff /> : <HiEye />}
           </button>
@@ -80,7 +81,7 @@ const SignUp = () => {
           </label>
           <input
             {...register("confirmPassword", { required: true })}
-            aria-invalid={errors.confirmPassword ? true : false}
+            aria-invalid={errors.confirmPassword ? "true" : "false"}
             type={showPassword ? "text" : "password"}
             placeholder="confirm password"
             className="input input-bordered"
@@ -88,24 +89,10 @@ const SignUp = () => {
           <button
             onClick={togglePassword}
             type="button"
-            className="absolute bottom-3.5 right-3.5 text-current text-xl"
+            className="absolute bottom-3.5 right-3.5 text-current text-xl text-white"
           >
             {showPassword ? <HiEyeOff /> : <HiEye />}
           </button>
-        </div>
-
-        {/* INSTAGRAM LOGIN */}
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">Instagram Login*</span>
-          </label>
-          <input
-            {...register("instagramLogin", { required: true })}
-            aria-invalid={errors.instagramLogin ? true : false}
-            type="text"
-            placeholder="instagram login"
-            className="input input-bordered"
-          />
         </div>
 
         {/* CONTROLS */}

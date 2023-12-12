@@ -1,13 +1,13 @@
-import { authStore } from "@/stores/auth";
 import { popupApi } from "@/stores/popup";
 import { widgetStore } from "@/stores/widget";
 import { useStore } from "effector-react";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineCopy, AiOutlineClose } from "react-icons/ai";
 
 const CodeSnippet = () => {
   const {
+    username,
     header,
     headerComponents: {
       followButton,
@@ -16,26 +16,23 @@ const CodeSnippet = () => {
       fullName,
       postCount,
       profilePicture,
-      username,
+      username: profileUsername,
       verifiedBadge,
     },
     theme: { backgroundColor, textColor, transparentBackground },
   } = useStore(widgetStore);
-  const { user } = useStore(authStore);
   const { setPopup } = popupApi;
   const [copyMessage, setCopyMessage] = useState(false);
 
-  const code = `<div id="instagram-widget-weblab"></div><script>window.WEBLAB_WIDGET_CONFIG={login:"${
-    user?.instagramLogin
-  }",header:${header},profile_picture:${profilePicture.checked},full_name:${
-    fullName.checked
-  },username:${username.checked},verifiedBadge:${
-    verifiedBadge.checked
-  },postCount:${postCount.checked},followersCount:${
-    followersCount.checked
-  },followingCount:${followingCount.checked},followButton:${
-    followButton.checked
-  },backgroundColor:${
+  const code = `<div id="instagram-widget-weblab"></div><script>window.WEBLAB_WIDGET_CONFIG={login:"${username}",header:${header},profile_picture:${
+    profilePicture.checked
+  },full_name:${fullName.checked},username:${
+    profileUsername.checked
+  },verifiedBadge:${verifiedBadge.checked},postCount:${
+    postCount.checked
+  },followersCount:${followersCount.checked},followingCount:${
+    followingCount.checked
+  },followButton:${followButton.checked},backgroundColor:${
     transparentBackground ? '"transparent"' : `\"${backgroundColor}\"`
   },color:"${textColor}"}</script><script src="${
     process.env.NEXT_PUBLIC_API

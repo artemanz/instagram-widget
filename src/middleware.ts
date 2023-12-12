@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export function middleware(req: Request) {
+export function middleware() {
   const res = NextResponse.next()
 
   // add the CORS headers to the response

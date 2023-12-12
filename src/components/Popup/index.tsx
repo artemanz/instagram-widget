@@ -6,9 +6,9 @@ import { popupApi, popupStore } from "@/stores/popup";
 import { useStore } from "effector-react";
 import { SignIn } from "./SignIn";
 import { SignUp } from "./SignUp";
-import { PropsWithChildren } from "react";
 import { SignOut } from "./SignOut";
 import { CodeSnippet } from "./CodeSnippet";
+import { InstagramLogin } from "./InstagramLogin";
 
 const Popup = () => {
   const { popup } = useStore(popupStore);
@@ -37,6 +37,9 @@ const Popup = () => {
 
       case "widget_code":
         return <CodeSnippet />;
+
+      case "instagram_login":
+        return <InstagramLogin />;
 
       default:
         return null;

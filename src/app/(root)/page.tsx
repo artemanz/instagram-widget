@@ -3,11 +3,11 @@
 import Link from "next/link";
 import backgroundImage from "./images/background.png";
 import Image from "next/image";
-import { Header } from "./components";
-import { Popup } from "@/components";
+import { Header, Popup } from "@/components";
 import { useStore } from "effector-react";
 import { authStore } from "@/stores/auth";
 import { popupApi } from "@/stores/popup";
+import { PATH } from "@/common/path";
 
 export default function Home() {
   const { user } = useStore(authStore);
@@ -26,11 +26,11 @@ export default function Home() {
           className="object-cover z-0"
         />
         <div className="container relative text-center flex items-center flex-col justify-center h-full gap-4">
-          <p className="text-base-300 text-2xl">
+          <p className="text-2xl">
             Build Your Perfect <br className="md:hidden" /> Instagram Feed
             Widget
           </p>
-          <h1 className="text-base-300 md:text-5xl text-4xl font-bold">
+          <h1 className="md:text-5xl text-4xl font-bold">
             Automatic Instagram Post <br className="hidden sm:block" /> Display
             on Your Website
           </h1>
@@ -43,14 +43,12 @@ export default function Home() {
               }
             }}
             className="btn mt-4 btn-wide btn-lg"
-            href={"/constructor"}
+            href={PATH.DASHBOARD}
           >
-            Create Widget
+            Get Started
           </Link>
         </div>
       </main>
-
-      <Popup />
     </div>
   );
 }

@@ -8,7 +8,6 @@ import {
 import { auth, db } from "@/lib/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { TForm } from "./@types";
-import { useAuthState } from "@/common/hooks/useAuthState";
 
 export const submit = async (
   formData: TForm,
@@ -29,11 +28,11 @@ export const submit = async (
     );
     const userData = {
       email: formData.email,
-      instagramLogin: formData.instagramLogin,
     };
 
     await setDoc(doc(db, "users", userCredential.user.uid), {
       ...userData,
+      widgets: []
     });
 
     await signInWithEmailAndPassword(auth, formData.email, formData.password);

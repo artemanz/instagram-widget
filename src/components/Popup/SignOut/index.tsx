@@ -10,10 +10,10 @@ const SignOut = () => {
     <motion.div
       initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}
-      className="relative text-center card-body bg-base-100 rounded-2xl"
+      className="relative text-center card-body bg-base-100 rounded-2xl text-white"
     >
       <p className="text-xl">Are you really want to leave?</p>
-      <div className="flex justify-center gap-4 mt-4">
+      <div className="flex justify-center gap-4 mt-4 flex-col sm:flex-row">
         <button onClick={() => logOut()} className="btn btn-error">
           Yes, I want to leave
         </button>

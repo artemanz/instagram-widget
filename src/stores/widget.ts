@@ -5,7 +5,10 @@ type THeaderComponent = {
   checked: boolean;
 };
 
-export type TWidgetStore = {
+export type TWidget = {
+  id: string;
+  username: string | null;
+  created: number;
   constructorState: "theme" | "components" | "language";
   theme: {
     backgroundColor: string;
@@ -26,7 +29,13 @@ export type TWidgetStore = {
   };
 };
 
-export const widgetStore = createStore<TWidgetStore>({
+type TWidgetStore = Omit<TWidget, "created" | "id"> & {
+  id?: string;
+  created?: number;
+};
+
+export const initialWidget: TWidgetStore = {
+  username: null,
   constructorState: "theme",
   theme: {
     backgroundColor: "#ffffff",
@@ -69,7 +78,9 @@ export const widgetStore = createStore<TWidgetStore>({
       checked: true,
     },
   },
-});
+};
+
+export const widgetStore = createStore<TWidgetStore>(initialWidget);
 
 export const widgetApi = createApi(widgetStore, {
   setConstructorState: (store, newState: TWidgetStore["constructorState"]) => ({
@@ -98,7 +109,6 @@ export const widgetApi = createApi(widgetStore, {
     ...store,
     view,
   }),
-  setState: (_, payload: TWidgetStore) => payload,
   toggleHeader: (state, payload: boolean) => ({ ...state, header: payload }),
   toggleHeaderComponent: (
     state,
@@ -108,4 +118,14 @@ export const widgetApi = createApi(widgetStore, {
 
     return { ...state };
   },
+  reset: () => {
+    localStorage.removeItem("instagram_username");
+    return { ...initialWidget };
+  },
+  setUsername: (store, payload: TWidgetStore["username"]) => {
+    localStorage.setItem("instagram_username", JSON.stringify(payload));
+    if (!payload) localStorage.removeItem("instagram_username");
+    return { ...store, username: payload };
+  },
+  setWidgetData: (_, payload: TWidgetStore) => payload,
 });

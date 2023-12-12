@@ -1,11 +1,13 @@
 "use client";
 
 import { useAuthState } from "@/common/hooks/useAuthState";
+import { Popup } from "@/components";
 import { Loader } from "@/components/UI";
 import { authStore } from "@/stores/auth";
 import { popupApi } from "@/stores/popup";
+import { widgetApi } from "@/stores/widget";
 import { useStore } from "effector-react";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient({
@@ -29,7 +31,10 @@ const Root = ({ children }: PropsWithChildren) => {
     );
 
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      {children}
+      <Popup />
+    </QueryClientProvider>
   );
 };
 

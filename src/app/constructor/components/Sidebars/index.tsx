@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
 import { HeaderSidebar } from "./HeaderSidebar";
@@ -44,9 +44,12 @@ export const Sidebar = () => {
             )}
           >
             <HeaderSidebar />
-            {/* <Link href={"?type=language"} className="btn btn-success">
-              Continue
-            </Link> */}
+            <button
+              onClick={() => widgetApi.setConstructorState("theme")}
+              className="btn btn-success"
+            >
+              Back to the template
+            </button>
           </div>
 
           <div
