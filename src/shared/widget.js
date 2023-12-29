@@ -411,4 +411,5 @@ function instagramWidget() {
   loadInstagramPhotos();
 }
 
+window.WEBLAB_WIDGET.init = instagramWidget
 window.addEventListener("DOMContentLoaded", instagramWidget);
