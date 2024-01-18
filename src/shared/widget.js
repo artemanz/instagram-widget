@@ -187,6 +187,10 @@ function instagramWidget() {
     justify-content: center;
     grid-template: 100% / 100%;
   }
+  #instagram-widget-weblab .images-grid-item img {
+    width: 100%;
+    height:100%;
+  }
   #instagram-widget-weblab .images-grid-item .ico {
     position: absolute;
     top: 16px;
@@ -355,18 +359,13 @@ function instagramWidget() {
       `
     <ul class="images-grid">
     ${mediaData.slice(0, 9).reduce((acc, data) => {
-      const mediaElement =
-        data.media_type === "VIDEO"
-          ? document.createElement("video")
-          : document.createElement("img");
-      if (data.media_type === "IMAGE" || data.media_type === "CAROUSEL_ALBUM") {
+      const mediaElement = document.createElement("img");
+      if (data.media_type === "IMAGE" || data.media_type === "CAROUSEL_ALBUM")
         mediaElement.src = data.media_url;
-        mediaElement.className = "gallery-image";
-      } else if (data.media_type === "VIDEO") {
-        mediaElement.src = data.media_url;
-        mediaElement.className = "gallery-image";
-        mediaElement.loop = true;
-      }
+      else if (data.media_type === "VIDEO")
+        mediaElement.src = data.thumbnail_url;
+
+      mediaElement.className = "gallery-image";
 
       return (
         acc +
@@ -413,6 +412,6 @@ function instagramWidget() {
 
 window.WEBLAB_WIDGET = {
   init: instagramWidget,
-  config: window.WEBLAB_WIDGET_CONFIG
-}
+  config: window.WEBLAB_WIDGET_CONFIG,
+};
 window.addEventListener("DOMContentLoaded", instagramWidget);

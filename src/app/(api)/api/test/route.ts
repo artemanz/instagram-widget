@@ -1,3 +1,0 @@
-export const GET = async () => {
-  return Response.json({ test: 123 });
-};

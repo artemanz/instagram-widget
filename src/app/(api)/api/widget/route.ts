@@ -4,7 +4,7 @@ import path from "path";
 const ACCESS_TOKEN = `EAASu7wQRZBeQBOwvvBieH0HA72Tr8ZAgshwYmaTxPfNZCsVQAO6xTqxGDFgMqpHPZBCw4BNLF2PChkajyEcxTT8o62kZCUuxL9lam731F5in7h5uoQ9RmLZAB4TbgcznRwNbt1tQn4DYDhCOLO0gPdPiTZB8ZBAW8e5QnZCbDhxBF1GhHe8oQ0nCrfZAwesX6xWdBpcg8WNitcCQZDZD`;
 const FIELDS =
   "{name,followers_count,follows_count,username,media_count,biography,profile_picture_url," +
-  "media.limit(12){comments_count,caption,like_count,permalink,media_type,media_url}}";
+  "media.limit(0){comments_count,caption,like_count,permalink,media_type,media_url,thumbnail_url,timestamp}}";
 
 export const POST = async (req: Request) => {
   const { username } = await req.json();
