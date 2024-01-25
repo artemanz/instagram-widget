@@ -1,7 +1,7 @@
 import { createApi, createStore } from "effector";
 
 export type TPopup = {
-  popup: "login" | "signup" | "greetings" | "signout" | "widget_code" | "instagram_login" | null;
+  popup: "login" | "signup" | "reset_password_sent" | "signout" | "widget_code" | "instagram_login" | "reset_password" | null;
 };
 
 export const popupStore = createStore<TPopup>({

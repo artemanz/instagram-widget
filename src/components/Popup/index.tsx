@@ -9,6 +9,7 @@ import { SignUp } from "./SignUp";
 import { SignOut } from "./SignOut";
 import { CodeSnippet } from "./CodeSnippet";
 import { InstagramLogin } from "./InstagramLogin";
+import { ResetPassword } from "./ResetPassword";
 
 const Popup = () => {
   const { popup } = useStore(popupStore);
@@ -22,14 +23,14 @@ const Popup = () => {
         return <SignIn />;
       case "signup":
         return <SignUp />;
-      case "greetings":
+      case "reset_password_sent":
         return (
           <motion.div
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
-            className="relative text-center card-body bg-base-100 rounded-2xl"
+            className="relative text-center card-body bg-base-100 rounded-2xl text-white"
           >
-            We sent verification link to your email adress.
+            We sent reset password link to your email adress.
           </motion.div>
         );
       case "signout":
@@ -40,6 +41,9 @@ const Popup = () => {
 
       case "instagram_login":
         return <InstagramLogin />;
+
+      case "reset_password":
+        return <ResetPassword />;
 
       default:
         return null;

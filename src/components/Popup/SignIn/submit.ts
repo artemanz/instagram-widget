@@ -18,7 +18,7 @@ export const submit = async (
       switch (error.code) {
         case "auth/invalid-login-credentials":
           setError("root", {
-            message: "User with this email doesn't exist",
+            message: "Invalid credentials",
           });
           break;
         default:

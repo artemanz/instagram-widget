@@ -70,13 +70,17 @@ const SignIn = () => {
           >
             {showPassword ? <HiEyeOff /> : <HiEye />}
           </button>
-          {/* <label className="label">
-            <button type="button" className="label-text-alt link link-hover">
-              Forgot password?
-            </button>
-          </label> */}
         </div>
-        <div className="mt-6 form-control">
+        <label className="label p-0">
+          <button
+            onClick={() => setPopup("reset_password")}
+            type="button"
+            className="label-text-alt transition-colors hover:text-primary"
+          >
+            Forgot password?
+          </button>
+        </label>
+        <div className="mt-2 form-control">
           {errors.root && (
             <p className="text-center text-error">{errors.root?.message}</p>
           )}
