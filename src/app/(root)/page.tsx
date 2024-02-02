@@ -3,7 +3,7 @@
 import Link from "next/link";
 import backgroundImage from "./images/background.png";
 import Image from "next/image";
-import { Header, Popup } from "@/components";
+import { Footer, Header, Popup } from "@/components";
 import { useStore } from "effector-react";
 import { authStore } from "@/stores/auth";
 import { popupApi } from "@/stores/popup";
@@ -14,10 +14,10 @@ export default function Home() {
   const { setPopup } = popupApi;
 
   return (
-    <div className="grid h-screen [grid-auto-rows:auto_minmax(0,1fr)]">
+    <div className="grid [grid-auto-rows:auto_minmax(0,1fr)_auto] min-h-screen">
       <Header />
 
-      <main className="bg-gradient-primary relative">
+      <main className="bg-gradient-primary relative min-h-[45rem]">
         <Image
           priority
           src={backgroundImage.src}
@@ -49,6 +49,8 @@ export default function Home() {
           </Link>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 }

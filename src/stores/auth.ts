@@ -2,10 +2,22 @@ import { auth, db } from "@/lib/firebase";
 import { createApi, createEffect, createStore } from "effector";
 import { signOut } from "firebase/auth";
 import { TWidget } from "./widget";
-import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
+import {
+  Timestamp,
+  arrayRemove,
+  arrayUnion,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 
 type AuthStore = {
-  user: { email: string; id: string; feed: TWidget[] } | null;
+  user: {
+    email: string;
+    id: string;
+    feed: TWidget[];
+    views_remain: number;
+    update_views_limit: Date;
+  } | null;
 };
 
 export const authStore = createStore<AuthStore>({

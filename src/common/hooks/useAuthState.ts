@@ -3,7 +3,7 @@ import { authApi } from "@/stores/auth";
 import { TFirebaseWidget } from "@/stores/feed";
 import { TWidget } from "@/stores/widget";
 import { onAuthStateChanged } from "firebase/auth";
-import { getDoc, doc } from "firebase/firestore";
+import { getDoc, doc, Timestamp } from "firebase/firestore";
 import { useState, useEffect } from "react";
 
 export const useAuthState = () => {
@@ -15,13 +15,15 @@ export const useAuthState = () => {
       if (currentUser) {
         const user = await getDoc(doc(db, "users", currentUser.uid));
         const userData = user.data();
+
         if (userData) {
           const feed: TWidget[] = [];
+          const updateViewsLimit: Timestamp = userData.update_views_limit;
           if (userData.feed) {
             const result = await Promise.all(
               userData.feed.map(async (w: any) => {
                 const snap = await getDoc(w);
-                console.log(snap.exists())
+
                 if (snap.exists()) {
                   const data = snap.data() as TFirebaseWidget;
                   return {
@@ -35,9 +37,10 @@ export const useAuthState = () => {
             feed.push(...result);
           }
           setUser({
-            id: user.id,
-            ...user.data(),
+            ...userData,
+            id: currentUser.uid,
             feed,
+            update_views_limit: updateViewsLimit.toDate(),
           });
         }
       } else {

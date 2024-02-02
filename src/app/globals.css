@@ -7,10 +7,6 @@
     @apply bg-white text-base-300;
   }
 
-  body {
-    @apply overflow-hidden;
-  }
-
   img {
     @apply block object-cover;
   }
@@ -23,6 +19,11 @@
 @layer components {
   .container {
     @apply px-4 mx-auto;
+    max-width: 1280px;
+
+    @media (min-width: 1536px) {
+      max-width: 1536px;
+    }
   }
 
   .input[aria-invalid="true"] {

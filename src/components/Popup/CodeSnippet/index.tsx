@@ -1,3 +1,4 @@
+import { authStore } from "@/stores/auth";
 import { popupApi } from "@/stores/popup";
 import { widgetStore } from "@/stores/widget";
 import { useStore } from "effector-react";
@@ -21,10 +22,13 @@ const CodeSnippet = () => {
     },
     theme: { backgroundColor, textColor, transparentBackground },
   } = useStore(widgetStore);
+  const { user } = useStore(authStore);
   const { setPopup } = popupApi;
   const [copyMessage, setCopyMessage] = useState(false);
 
-  const code = `<div id="instagram-widget-weblab"></div><script>window.WEBLAB_WIDGET_CONFIG={login:"${username}",header:${header},profile_picture:${
+  const code = `<div id="instagram-widget-weblab"></div><script>window.WEBLAB_WIDGET_CONFIG={token:"${
+    user!.id
+  }",login:"${username}",header:${header},profile_picture:${
     profilePicture.checked
   },full_name:${fullName.checked},username:${
     profileUsername.checked

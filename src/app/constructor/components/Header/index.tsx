@@ -11,7 +11,6 @@ import { updateWidgetInDb } from "@/stores/feed";
 export const Header = () => {
   const widget = useStore(widgetStore);
   const router = useRouter();
-  console.log(widget);
 
   const [title, setTitle] = useState("");
 

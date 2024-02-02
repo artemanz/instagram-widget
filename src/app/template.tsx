@@ -29,7 +29,7 @@ const Root = ({ children }: PropsWithChildren) => {
         setWidgetData(
           JSON.parse(widgetState, (key, value) => {
             if (key === "created") return new Date(value);
-            return value
+            return value;
           })
         );
       setFeed(user.feed);

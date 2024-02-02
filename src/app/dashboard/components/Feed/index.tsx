@@ -46,16 +46,18 @@ const Feed = () => {
         <div className="flex flex-col gap-2 md:self-end w-full md:w-auto">
           <div className="flex justify-between">
             <span>Views</span>
-            <span className="font-bold">0 / 5000</span>
+            <span className="font-bold">
+              {5000 - user!.views_remain} / 5000
+            </span>
           </div>
 
           <progress
             className="progress progress-success bg-neutral-content w-full md:w-56"
-            value="0"
-            max="100"
+            value={5000 - user!.views_remain}
+            max="5000"
           />
 
-          <p>Reset 8 Oct, 2023</p>
+          <p>Reset {format(user!.update_views_limit, "d MMM, yyyy")}</p>
         </div>
       </div>
       <hr className="my-8" />

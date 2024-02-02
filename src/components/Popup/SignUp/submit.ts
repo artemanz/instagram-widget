@@ -32,7 +32,8 @@ export const submit = async (
 
     await setDoc(doc(db, "users", userCredential.user.uid), {
       ...userData,
-      feed: []
+      feed: [],
+      views_remain: 5000,
     });
 
     await signInWithEmailAndPassword(auth, formData.email, formData.password);
