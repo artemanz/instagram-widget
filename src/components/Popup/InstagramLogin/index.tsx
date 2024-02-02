@@ -21,7 +21,7 @@ const InstagramLogin = () => {
   const submit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const res = await getInstagramData(usernameInput);
+    const res = await getInstagramData(usernameInput, user!.id);
     if (!res) setError("User doesn't exist");
     else {
       const newWidget = {
