@@ -6,8 +6,9 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth, db } from "@/lib/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { Timestamp, doc, setDoc } from "firebase/firestore";
 import { TForm } from "./@types";
+import { add } from "date-fns";
 
 export const submit = async (
   formData: TForm,
@@ -34,6 +35,7 @@ export const submit = async (
       ...userData,
       feed: [],
       views_remain: 5000,
+      update_views_limit: Timestamp.fromDate(add(new Date(), { months: 1 })),
     });
 
     await signInWithEmailAndPassword(auth, formData.email, formData.password);

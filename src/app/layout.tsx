@@ -6,7 +6,7 @@ import { PropsWithChildren } from "react";
 const inter = Inter({ subsets: ["latin", "cyrillic"] });
 
 export const metadata: Metadata = {
-  title: "Instagram Widget",
+  title: "Widgeterius",
   description: "Weblab420 Instgram Widget",
 };
 

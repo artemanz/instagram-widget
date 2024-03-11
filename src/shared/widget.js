@@ -1,5 +1,5 @@
 function instagramWidget() {
-  const apiUrl = "https://weblab-instagram-widget.netlify.app/api/widget";
+  const apiUrl = "http://localhost:3000/api/widget";
 
   const FollowSvg = `
 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -59,6 +59,7 @@ function instagramWidget() {
     font-size: 16px;
     background-color: ${CONFIG.backgroundColor};
     color: ${CONFIG.color};
+    line-height: 1;
   }
   #instagram-widget-weblab * {
     box-sizing: border-box;
@@ -152,6 +153,7 @@ function instagramWidget() {
     -webkit-text-decoration: none;
     text-decoration: none;
     display: flex;
+    align-items: center;
     gap: 8px;
     padding-left: 16px;
     padding-right: 16px;
