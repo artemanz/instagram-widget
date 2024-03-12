@@ -1,11 +1,5 @@
 import { createApi, createEffect, createStore } from "effector";
-import {
-  Timestamp,
-  deleteDoc,
-  doc,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { Timestamp, deleteDoc, doc, setDoc } from "firebase/firestore";
 import { TWidget } from "./widget";
 import { db } from "@/lib/firebase";
 

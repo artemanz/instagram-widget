@@ -7,10 +7,12 @@ import { useStore } from "effector-react";
 import Link from "next/link";
 import { PATH } from "@/common/path";
 import { updateWidgetInDb } from "@/stores/feed";
+import { authApi } from "@/stores/auth";
 
 export const Header = () => {
   const widget = useStore(widgetStore);
   const router = useRouter();
+  const { updateFeedWidget } = authApi;
 
   const [title, setTitle] = useState("");
 
@@ -53,6 +55,7 @@ export const Header = () => {
             className="btn btn-success"
             onClick={() => {
               updateWidgetInDb(widget as TWidget);
+              updateFeedWidget(widget as TWidget);
               router.push(PATH.DASHBOARD);
             }}
           >

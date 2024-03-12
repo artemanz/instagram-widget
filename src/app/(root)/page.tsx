@@ -3,7 +3,7 @@
 import Link from "next/link";
 import backgroundImage from "./images/background.png";
 import Image from "next/image";
-import { Footer, Header, Popup } from "@/components";
+import { Footer, Header } from "@/components";
 import { useStore } from "effector-react";
 import { authStore } from "@/stores/auth";
 import { popupApi } from "@/stores/popup";

@@ -2,13 +2,7 @@ import { auth, db } from "@/lib/firebase";
 import { createApi, createEffect, createStore } from "effector";
 import { signOut } from "firebase/auth";
 import { TWidget } from "./widget";
-import {
-  Timestamp,
-  arrayRemove,
-  arrayUnion,
-  doc,
-  updateDoc,
-} from "firebase/firestore";
+import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 
 type AuthStore = {
   user: {
@@ -30,6 +24,12 @@ export const authApi = createApi(authStore, {
   },
   setFeed: (store, feed) => {
     return { ...store, feed };
+  },
+  updateFeedWidget: (store, widget: TWidget) => {
+    const feed = [...store.user!.feed];
+    const widgetToUpdateIdx = feed.findIndex((w) => w.id === widget.id);
+    if (widgetToUpdateIdx) feed[widgetToUpdateIdx] = widget;
+    return { ...store, user: { ...store.user!, feed } };
   },
   logOut() {
     signOut(auth);
