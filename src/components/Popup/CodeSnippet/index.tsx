@@ -48,7 +48,7 @@ const CodeSnippet = () => {
       animate={{ opacity: 1, y: 0 }}
       className="p-6 bg-base-100 rounded-2xl text-white relative max-w-3xl mx-4 w-[80vw]"
     >
-      <button onClick={() => setPopup(null)} className="absolute right-3 top-3">
+      <button onClick={() => setPopup(null)} className="absolute right-2 top-2">
         <AiOutlineClose size={20} />
       </button>
       <p>

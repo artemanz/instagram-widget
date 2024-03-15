@@ -46,7 +46,7 @@ const Footer = () => {
               effortlessly display your latest posts and captivating content.
             </div>
             <ul className="flex gap-3 mt-6">
-              <li>
+              {/* <li>
                 <a
                   className="flex md:w-8 w-6 aspect-square [&>svg]:w-full [&>svg]:h-full hover:text-primary transition-colors"
                   href="#"
@@ -54,11 +54,11 @@ const Footer = () => {
                 >
                   <LiaTelegram />
                 </a>
-              </li>
+              </li> */}
               <li>
                 <a
                   className="flex md:w-8 w-6 aspect-square [&>svg]:w-full [&>svg]:h-full hover:text-primary transition-colors"
-                  href="#"
+                  href="https://www.instagram.com/widgeterius"
                   target="_blank"
                 >
                   <LiaInstagram />
@@ -108,11 +108,11 @@ const Footer = () => {
                   971 52 446 83 31
                 </a>
               </li>
-              <li className="max-w-[38ch] mt-6">
+              {/* <li className="max-w-[38ch] mt-6">
                 Dubai National Insurance Building, 906-109 Port Saeed, Dubai,
                 United Arab Emirates <br />
                 Alexander Khomushko It Services, L.L.C
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>
@@ -121,7 +121,7 @@ const Footer = () => {
           <div className="mt-2 sm:mt-0 col-span-3 sm:col-auto text-center sm:text-left">
             ©{new Date().getFullYear()}. All rights reserver
           </div>
-          <div className="flex items-center gap-4 grow lg:justify-center flex-wrap col-[1/4] row-start-1 lg:col-auto lg:row-auto">
+          {/* <div className="flex items-center gap-4 grow lg:justify-center flex-wrap col-[1/4] row-start-1 lg:col-auto lg:row-auto">
             <div>SUBSCRIBE TO OUR NEWSLETTER</div>
             <form
               onSubmit={handleSubmit(submit)}
@@ -153,7 +153,7 @@ const Footer = () => {
                 </motion.div>
               )}
             </form>
-          </div>
+          </div> */}
           <div className="col-span-3 mt-6 row-start-2 sm:col-auto sm:row-auto sm:mt-0 text-center sm:text-right">
             <a
               className="transition-colors hover:text-primary"

@@ -2,7 +2,7 @@
 
 import { feedApi, feedStore, removeWidgetFromDb } from "@/stores/feed";
 import { popupApi } from "@/stores/popup";
-import { widgetApi } from "@/stores/widget";
+import { TWidget, widgetApi } from "@/stores/widget";
 import { useStore } from "effector-react";
 import { format } from "date-fns";
 import {
@@ -14,6 +14,8 @@ import {
 import { useRouter } from "next/navigation";
 import { PATH } from "@/common/path";
 import { authStore, removeRefFromFeed } from "@/stores/auth";
+import { useState } from "react";
+import { Modal } from "@/components/Modal";
 
 const Feed = () => {
   const router = useRouter();
@@ -23,6 +25,14 @@ const Feed = () => {
   const { user } = useStore(authStore);
   const { feed } = useStore(feedStore);
   const { removeWidget } = feedApi;
+
+  const [removeModal, setRemoveModal] = useState(false);
+
+  const deleteWidgetCallback = (w: TWidget) => {
+    removeWidgetFromDb(w);
+    removeRefFromFeed({ userId: user!.id, widgetId: w.id });
+    removeWidget(w);
+  };
 
   const closeDropdown = () => {
     const elem = document.activeElement as HTMLElement | null;
@@ -122,10 +132,8 @@ const Feed = () => {
                     </li>
                     <li
                       onClick={() => {
+                        setRemoveModal(true);
                         closeDropdown();
-                        removeWidgetFromDb(w);
-                        removeRefFromFeed({ userId: user!.id, widgetId: w.id });
-                        removeWidget(w);
                       }}
                       className="p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer flex justify-between items-center text-primary"
                     >
@@ -134,6 +142,36 @@ const Feed = () => {
                   </ul>
                 </div>
               </div>
+
+              {/* MODALS */}
+              {removeModal && (
+                <Modal
+                  hide={() => {
+                    setRemoveModal(false);
+                  }}
+                >
+                  Are you sure you want to delete this widget?
+                  <div className="flex justify-center gap-4 mt-2">
+                    <button
+                      className="btn"
+                      onClick={() => {
+                        deleteWidgetCallback(w);
+                        setRemoveModal(false);
+                      }}
+                    >
+                      Delete
+                    </button>
+                    <button
+                      className="btn"
+                      onClick={() => {
+                        setRemoveModal(false);
+                      }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </Modal>
+              )}
             </li>
           ))}
         </ul>

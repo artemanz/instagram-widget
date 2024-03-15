@@ -22,9 +22,6 @@ export const authApi = createApi(authStore, {
   setUser: (store, user) => {
     return { ...store, user };
   },
-  setFeed: (store, feed) => {
-    return { ...store, feed };
-  },
   updateFeedWidget: (store, widget: TWidget) => {
     const feed = [...store.user!.feed];
     const widgetToUpdateIdx = feed.findIndex((w) => w.id === widget.id);

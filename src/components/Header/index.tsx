@@ -22,14 +22,20 @@ export const Header = () => {
   return (
     <header className="relative bg-base-200 text-white">
       <div className="container flex justify-between py-4 items-center">
-        <Link href={"/"}>
-          <Logo />
-        </Link>
+        <div className="flex gap-2 items-center">
+          <Link href={"/"}>
+            <Logo />
+          </Link>
+
+          <div className="border border-primary rounded-full px-2 text-primary text-xs">
+            Beta
+          </div>
+        </div>
         <div className="flex gap-4">
           {user ? (
             <div tabIndex={0} role="button" className="dropdown dropdown-end">
               <div className="flex items-center gap-4">
-                <p className="hidden sm:block">{user.email}</p>
+                <p className="hidden md:block">{user.email}</p>
                 <div className="w-10 h-10 rounded-full bg-gradient-primary text-2xl uppercase grid place-content-center">
                   {user.email[0]}
                 </div>
@@ -51,7 +57,7 @@ export const Header = () => {
                   Dashboard
                 </Link>
 
-                <Link
+                {/* <Link
                   className=" p-2 hover:bg-gray-100 rounded-lg transition-colors"
                   href={"#"}
                   onClick={() => {
@@ -59,18 +65,18 @@ export const Header = () => {
                   }}
                 >
                   Billing
-                </Link>
+                </Link> */}
 
                 <hr className="my-1 border-black/25" />
-                <Link
-                  className=" p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                  href={"#"}
+                <button
+                  className=" p-2 hover:bg-gray-100 rounded-lg transition-colors text-left"
                   onClick={() => {
+                    setPopup("feedback");
                     closeDropdown();
                   }}
                 >
                   Contact Support
-                </Link>
+                </button>
 
                 <button
                   className="text-left p-2 hover:bg-gray-100 rounded-lg transition-colors"

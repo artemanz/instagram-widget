@@ -10,10 +10,21 @@ import { SignOut } from "./SignOut";
 import { CodeSnippet } from "./CodeSnippet";
 import { InstagramLogin } from "./InstagramLogin";
 import { ResetPassword } from "./ResetPassword";
+import { Feedback } from "./Feedback";
+import { useEffect } from "react";
 
 const Popup = () => {
   const { popup } = useStore(popupStore);
   const { setPopup } = popupApi;
+
+  useEffect(() => {
+    if (popup) document.documentElement.style.overflow = "hidden";
+    else document.documentElement.style.overflow = "";
+
+    return () => {
+      document.documentElement.style.overflow = "";
+    };
+  }, [popup]);
 
   if (!popup) return null;
 
@@ -44,6 +55,20 @@ const Popup = () => {
 
       case "reset_password":
         return <ResetPassword />;
+
+      case "feedback":
+        return <Feedback />;
+
+      case "feedback_sent":
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="relative text-center card-body bg-base-100 rounded-2xl text-white"
+          >
+            Thank you, your form has been submitted
+          </motion.div>
+        );
 
       default:
         return null;

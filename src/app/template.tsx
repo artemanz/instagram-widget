@@ -23,17 +23,18 @@ const Root = ({ children }: PropsWithChildren) => {
   const { setFeed } = feedApi;
 
   useEffect(() => {
-    if (user) {
-      const widgetState = localStorage.getItem("widget_state");
-      if (widgetState)
-        setWidgetData(
-          JSON.parse(widgetState, (key, value) => {
-            if (key === "created") return new Date(value);
-            return value;
-          })
-        );
-      setFeed(user.feed);
-    }
+    const widgetState = localStorage.getItem("widget_state");
+    if (widgetState)
+      setWidgetData(
+        JSON.parse(widgetState, (key, value) => {
+          if (key === "created") return new Date(value);
+          return value;
+        })
+      );
+  }, []);
+
+  useEffect(() => {
+    if (user) setFeed(user.feed);
     setPopup(null);
   }, [user]);
 
